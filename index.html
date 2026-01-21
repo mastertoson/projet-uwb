@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dossier Projet - Entretien CCI</title>
+    <title>Dossier CCI 2026 : Infrastructure UWB</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -20,13 +20,14 @@
                 extend: {
                     fontFamily: { sans: ['Outfit', 'sans-serif'] },
                     colors: {
-                        corp: {
-                            dark: '#1e293b',      // Slate 800
-                            blue: '#2563eb',      // Blue 600
-                            light: '#f8fafc',     // Slate 50
-                            accent: '#6366f1',    // Indigo
+                        brand: {
+                            dark: '#0f172a',      // Slate 900
+                            primary: '#2563eb',   // Blue 600
+                            secondary: '#3b82f6', // Blue 500
+                            accent: '#7c3aed',    // Violet
                             success: '#10b981',   // Emerald
-                            brand: '#0f172a'      // Dark Blue
+                            danger: '#ef4444',    // Red
+                            light: '#f8fafc'      // Slate 50
                         }
                     }
                 }
@@ -36,374 +37,452 @@
 
     <style>
         .chart-container { position: relative; width: 100%; height: 250px; }
-        .section-number {
-            font-size: 4rem; opacity: 0.05; font-weight: 900; position: absolute; top: -1rem; left: 1rem; z-index: 0;
+        
+        /* Stack Architecture Styles */
+        .stack-layer {
+            transition: transform 0.2s;
+            border: 1px solid rgba(255,255,255,0.1);
         }
-        #simulationCanvas { background: #f1f5f9; border-radius: 0.5rem; width: 100%; height: 100%; }
+        .stack-layer:hover { transform: scale(1.02); }
+        .connector {
+            width: 2px; height: 15px; background: #cbd5e1; margin: 0 auto;
+        }
 
+        /* Competitor Bars */
+        .comp-bar-bg { background: #e2e8f0; height: 8px; border-radius: 4px; overflow: hidden; }
+        .comp-bar-fill { height: 100%; border-radius: 4px; }
+        
         /* Heatmap Grid */
         .store-grid {
             display: grid;
             grid-template-columns: repeat(12, 1fr);
             grid-template-rows: repeat(8, 1fr);
             gap: 2px;
-            width: 100%; height: 250px;
+            width: 100%; 
+            min-width: 300px; /* Ensure readability on tiny screens */
+            height: 250px;
             background: #ffffff; border: 2px solid #cbd5e1; border-radius: 8px;
             position: relative; overflow: hidden;
         }
-        .heat-zone { position: absolute; border-radius: 50%; filter: blur(25px); opacity: 0.6; z-index: 10; }
-        .heat-red { background: #ef4444; } 
-        .heat-yellow { background: #eab308; }
-        .heat-blue { background: #3b82f6; }
+        @media (min-width: 768px) {
+            .store-grid { height: 300px; gap: 4px; }
+        }
+
+        .heat-zone {
+            position: absolute; border-radius: 50%; filter: blur(20px); opacity: 0.6; z-index: 10;
+        }
+        .heat-red { background: radial-gradient(circle, rgba(239,68,68,1) 0%, rgba(239,68,68,0) 70%); } 
+        .heat-yellow { background: radial-gradient(circle, rgba(234,179,8,1) 0%, rgba(234,179,8,0) 70%); }
+        .heat-blue { background: radial-gradient(circle, rgba(59,130,246,0.6) 0%, rgba(59,130,246,0) 70%); }
         
         .shelf-block {
-            background: #475569; border-radius: 2px; z-index: 20;
+            background: #475569; border-radius: 4px; z-index: 20;
             display: flex; align-items: center; justify-content: center;
-            color: #e2e8f0; font-size: 10px; font-weight: bold; writing-mode: vertical-rl;
+            color: #94a3b8; font-size: 8px; font-weight: bold; writing-mode: vertical-rl;
         }
+        @media (min-width: 768px) { .shelf-block { font-size: 10px; } }
+
         .checkout-block {
-            background: #0f172a; border-radius: 2px; z-index: 20; color: white;
-            display: flex; align-items: center; justify-content: center; font-size: 10px;
+            background: #0f172a; border-radius: 4px; z-index: 20; color: white;
+            display: flex; align-items: center; justify-content: center; font-size: 8px;
         }
+        @media (min-width: 768px) { .checkout-block { font-size: 10px; } }
     </style>
 </head>
-<body class="bg-slate-100 text-slate-800 antialiased font-sans pb-20">
+<body class="bg-slate-50 text-slate-800 antialiased overflow-x-hidden">
 
     <!-- HEADER -->
-    <header class="bg-white border-b border-slate-300 sticky top-0 z-50 shadow-sm">
-        <div class="max-w-6xl mx-auto px-6 py-3 flex justify-between items-center">
-            <div>
-                <h1 class="text-lg font-bold text-corp-dark uppercase tracking-wide">Dossier de Création</h1>
-                <p class="text-xs text-slate-500">Support de présentation - Confidentiel</p>
+    <nav class="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
+        <div class="max-w-6xl mx-auto px-4 md:px-6 py-4 flex flex-col md:flex-row justify-between items-center text-center md:text-left">
+            <div class="mb-2 md:mb-0">
+                <h1 class="text-lg md:text-xl font-extrabold text-brand-dark tracking-tight leading-tight">PROJET <span class="text-brand-primary">INFRASTRUCTURE UWB</span></h1>
+                <p class="text-xs text-slate-500 font-medium">Dossier de Création - Janvier 2026</p>
             </div>
-            <div class="hidden md:flex gap-2">
-                <span class="px-2 py-1 bg-slate-100 text-slate-600 text-xs rounded border border-slate-200">Janvier 2026</span>
-                <span class="px-2 py-1 bg-blue-50 text-corp-blue text-xs rounded border border-blue-100 font-bold">Phase : Amorçage</span>
+            <div>
+                <span class="bg-brand-primary/10 text-brand-primary px-3 py-1 rounded-full text-xs font-bold border border-brand-primary/20 whitespace-nowrap">
+                    Solution Clé en Main
+                </span>
             </div>
         </div>
-    </header>
+    </nav>
 
-    <main class="max-w-6xl mx-auto px-6 py-10 space-y-16">
+    <main class="max-w-6xl mx-auto px-4 md:px-6 py-8 md:py-12 space-y-16 md:space-y-24">
 
-        <!-- PARTIE 1: SYNTHÈSE DU PROJET (ID CARD) -->
-        <section class="bg-white rounded-xl shadow-md border-l-8 border-corp-blue p-8 relative overflow-hidden">
-            <div class="section-number">01</div>
-            <div class="relative z-10">
-                <h2 class="text-2xl font-bold text-corp-dark mb-6 pl-2">Fiche d'Identité du Projet</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div>
-                        <h3 class="text-sm font-bold text-slate-400 uppercase mb-3">La Proposition de Valeur</h3>
-                        <p class="text-lg font-medium text-slate-800 mb-4 leading-relaxed">
-                            Création d'une <strong>plateforme universelle de spatialisation</strong> indoor.
-                        </p>
-                        <p class="text-slate-600 mb-4 text-justify">
-                            Contrairement aux solutions fermées (silos), nous vendons une <strong>infrastructure ouverte</strong>. Nous installons un réseau physique unique, sur lequel le client active des modules logiciels selon ses besoins.
-                        </p>
-                        <div class="flex gap-2 mt-4">
-                            <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-xs font-bold">Hardware + SaaS</span>
-                            <span class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-xs font-bold">Modulaire</span>
-                            <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-bold">Scalable</span>
+        <!-- PARTIE 1: NOTRE OFFRE (Ce qu'on vend) -->
+        <section class="bg-white border border-slate-200 rounded-2xl shadow-xl overflow-hidden">
+            <div class="bg-brand-dark text-white p-6 md:p-8 text-center">
+                <h2 class="text-2xl md:text-3xl font-bold mb-2">1. Notre Offre : Une Solution "Clé en Main"</h2>
+                <p class="text-slate-300 text-sm md:text-lg">Nous ne vendons pas des composants en vrac. Nous vendons un système opérationnel.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-slate-100">
+                <!-- Etape 1 -->
+                <div class="p-6 md:p-8 text-center hover:bg-slate-50 transition">
+                    <div class="w-12 h-12 md:w-14 md:h-14 bg-blue-100 text-brand-primary rounded-full flex items-center justify-center mx-auto mb-3 md:mb-4 text-xl md:text-2xl font-bold">1</div>
+                    <h4 class="font-bold text-slate-900 mb-2 text-base md:text-lg">L'Audit & Installation</h4>
+                    <p class="text-sm text-slate-600 leading-relaxed">Nos techniciens posent les ancres au plafond et tirent les câbles Ethernet.</p>
+                </div>
+                <!-- Etape 2 -->
+                <div class="p-6 md:p-8 text-center hover:bg-slate-50 transition">
+                    <div class="w-12 h-12 md:w-14 md:h-14 bg-purple-100 text-brand-accent rounded-full flex items-center justify-center mx-auto mb-3 md:mb-4 text-xl md:text-2xl font-bold">2</div>
+                    <h4 class="font-bold text-slate-900 mb-2 text-base md:text-lg">Le Matériel (Hardware)</h4>
+                    <p class="text-sm text-slate-600 leading-relaxed">Fourniture de la Centrale locale sécurisée et des badges (Tags) pour le personnel.</p>
+                </div>
+                <!-- Etape 3 -->
+                <div class="p-6 md:p-8 text-center hover:bg-slate-50 transition">
+                    <div class="w-12 h-12 md:w-14 md:h-14 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center mx-auto mb-3 md:mb-4 text-xl md:text-2xl font-bold">3</div>
+                    <h4 class="font-bold text-slate-900 mb-2 text-base md:text-lg">Le Logiciel (Software)</h4>
+                    <p class="text-sm text-slate-600 leading-relaxed">Accès à la plateforme web. Activation des modules choisis (Sécurité, Retail...).</p>
+                </div>
+                <!-- Etape 4 -->
+                <div class="p-6 md:p-8 text-center hover:bg-slate-50 transition">
+                    <div class="w-12 h-12 md:w-14 md:h-14 bg-green-100 text-brand-success rounded-full flex items-center justify-center mx-auto mb-3 md:mb-4 text-xl md:text-2xl font-bold">4</div>
+                    <h4 class="font-bold text-slate-900 mb-2 text-base md:text-lg">Service Continu</h4>
+                    <p class="text-sm text-slate-600 leading-relaxed">Garantie matériel, mises à jour à distance et support technique 24/7.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- PARTIE 2: ARCHITECTURE (Animation Canvas Câblage) -->
+        <section>
+            <div class="text-center mb-8 md:mb-10">
+                <h2 class="text-2xl md:text-3xl font-bold text-slate-900 mb-3 md:mb-4">2. L'Architecture Technique</h2>
+                <p class="text-base md:text-lg text-slate-600 max-w-3xl mx-auto">
+                    Une infrastructure physique robuste : Les capteurs sont reliés par câbles (bords de la pièce) vers la centrale qui traite les données.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                
+                <!-- Vue Physique : Animation Câblée -->
+                <div class="bg-slate-50 rounded-2xl shadow-lg border border-slate-200 flex flex-col h-80 md:h-96 overflow-hidden relative">
+                    <div class="absolute top-4 left-4 z-10 bg-white/90 backdrop-blur px-3 py-1 rounded text-xs font-bold shadow border border-slate-200">
+                        <span class="text-green-600 animate-pulse">●</span> Simulation Flux Données
+                    </div>
+                    <!-- Canvas pour l'animation fluide -->
+                    <canvas id="simulationCanvas" class="w-full h-full"></canvas>
+                </div>
+
+                <!-- Vue Logique : L'Empilement -->
+                <div class="flex flex-col justify-center space-y-4">
+                    <div class="bg-slate-900 text-white p-5 md:p-6 rounded-xl shadow-lg border-l-8 border-brand-accent relative overflow-hidden">
+                        <div class="absolute right-0 top-0 opacity-10 text-6xl p-2">📱</div>
+                        <h4 class="text-lg font-bold text-brand-accent mb-1">Niveau 3 : Les Applications</h4>
+                        <p class="text-sm text-slate-300">C'est ce que voit le client (Interface Web / Mobile). <br>Ex: "Alerte Chute", "Carte de Magasin".</p>
+                    </div>
+
+                    <div class="flex justify-center"><div class="h-6 md:h-8 w-1 bg-slate-300"></div></div>
+
+                    <div class="bg-white text-slate-800 p-5 md:p-6 rounded-xl shadow-md border-l-8 border-brand-primary relative overflow-hidden">
+                        <div class="absolute right-0 top-0 opacity-10 text-6xl p-2">🖥️</div>
+                        <h4 class="text-lg font-bold text-brand-primary mb-1">Niveau 2 : La Centrale</h4>
+                        <p class="text-sm text-slate-600">Le serveur local. Il reçoit les données via les câbles et calcule la position X,Y,Z en temps réel.</p>
+                    </div>
+
+                    <div class="flex justify-center"><div class="h-6 md:h-8 w-1 bg-slate-300"></div></div>
+
+                    <div class="bg-slate-100 text-slate-600 p-5 md:p-6 rounded-xl border border-slate-200 border-l-8 border-slate-500 relative overflow-hidden">
+                        <div class="absolute right-0 top-0 opacity-10 text-6xl p-2">📡</div>
+                        <h4 class="text-lg font-bold text-slate-700 mb-1">Niveau 1 : Infrastructure</h4>
+                        <p class="text-sm text-slate-500">Les ancres au plafond, reliées en filaire (Ethernet PoE). <br>Robustesse industrielle.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PARTIE 3: LA FIABILITÉ (UWB) -->
+        <section class="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-slate-100">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10 items-center">
+                <div>
+                    <h2 class="text-2xl md:text-2xl font-bold text-slate-900 mb-4">3. Pourquoi l'UWB ? (La Fiabilité)</h2>
+                    <p class="text-slate-600 mb-6 text-sm md:text-base">
+                        L'UWB (Ultra-Wideband) n'est pas du Wi-Fi. C'est un <strong>Radar</strong>. Il mesure le temps de vol de la lumière pour une précision chirurgicale.
+                    </p>
+                    <div class="space-y-4">
+                        <div class="flex items-start gap-3">
+                            <div class="bg-green-100 text-green-700 p-2 rounded text-lg md:text-xl">🎯</div>
+                            <div>
+                                <h4 class="font-bold text-slate-800 text-sm md:text-base">Précision 10 cm</h4>
+                                <p class="text-xs md:text-sm text-slate-500">Contre 3 à 5 mètres pour le Bluetooth/Wi-Fi.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <div class="bg-blue-100 text-blue-700 p-2 rounded text-lg md:text-xl">🏗️</div>
+                            <div>
+                                <h4 class="font-bold text-slate-800 text-sm md:text-base">Traverse les obstacles</h4>
+                                <p class="text-xs md:text-sm text-slate-500">Fonctionne à travers murs, cloisons et mobilier.</p>
+                            </div>
                         </div>
                     </div>
-                    <div class="bg-slate-50 p-6 rounded-lg border border-slate-200">
-                        <ul class="space-y-4">
-                            <li class="flex justify-between border-b border-slate-200 pb-2">
-                                <span class="text-slate-500 text-sm">Technologie Cœur</span>
-                                <span class="font-bold text-corp-dark">UWB (Ultra-Wideband)</span>
-                            </li>
-                            <li class="flex justify-between border-b border-slate-200 pb-2">
-                                <span class="text-slate-500 text-sm">Précision</span>
-                                <span class="font-bold text-corp-dark">10 cm (Classe Industrielle)</span>
-                            </li>
-                            <li class="flex justify-between pt-2">
-                                <span class="text-slate-500 text-sm">Cibles</span>
-                                <span class="font-bold text-corp-dark text-right">Industrie, Retail, Habitat</span>
-                            </li>
+                </div>
+                <div class="h-60 md:h-64">
+                    <h3 class="text-center text-xs font-bold text-slate-400 uppercase mb-2">Marge d'erreur (Plus bas est mieux)</h3>
+                    <div class="chart-container">
+                        <canvas id="precisionChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PARTIE 4: CONCURRENCE -->
+        <section>
+            <div class="text-center mb-8 md:mb-10">
+                <div class="inline-block bg-brand-dark text-white px-3 py-1 rounded text-sm font-bold mb-3">POSITIONNEMENT</div>
+                <h2 class="text-2xl md:text-2xl font-bold text-slate-900">4. Le Vide du Marché</h2>
+                <p class="text-slate-600 mt-2 text-sm md:text-base">Nous sommes la seule alternative flexible face aux solutions rigides du marché.</p>
+            </div>
+
+            <!-- VISUALISATION DU "GAP" -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
+                <!-- Concurrent A -->
+                <div class="bg-slate-100 p-5 md:p-6 rounded-xl border border-slate-200 opacity-60 grayscale hover:grayscale-0 transition">
+                    <h4 class="font-bold text-slate-600 mb-4 text-base md:text-lg">Industrie Lourde</h4>
+                    <p class="text-xs text-slate-500 mb-4 md:mb-6 italic">Ex: Ubisense, Zebra...</p>
+                    <div class="text-xs font-bold text-red-500 mb-1">Coût : Très Cher (€€€)</div>
+                    <div class="w-full bg-slate-200 h-2 rounded"><div class="h-full bg-red-500 w-full rounded"></div></div>
+                </div>
+
+                <!-- NOTRE SOLUTION -->
+                <div class="bg-white p-6 md:p-8 rounded-xl shadow-2xl border-2 border-brand-primary transform md:-translate-y-4 relative z-10 order-first md:order-none mb-4 md:mb-0">
+                    <div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-brand-primary text-white px-4 py-1 rounded-full font-bold text-xs md:text-sm shadow whitespace-nowrap">NOTRE PROJET</div>
+                    <h4 class="font-bold text-brand-primary mb-4 text-lg md:text-xl text-center">Le Juste Milieu</h4>
+                    <div class="text-xs font-bold text-brand-success mb-1">Coût : Abordable (€€)</div>
+                    <div class="w-full bg-slate-200 h-2 rounded mb-4"><div class="h-full bg-brand-success w-5/12 rounded"></div></div>
+                    <div class="text-xs font-bold text-brand-success mb-1">Flexibilité : Totale</div>
+                    <div class="w-full bg-slate-200 h-2 rounded"><div class="h-full bg-brand-success w-full rounded"></div></div>
+                </div>
+
+                <!-- Concurrent B -->
+                <div class="bg-slate-100 p-5 md:p-6 rounded-xl border border-slate-200 opacity-60 grayscale hover:grayscale-0 transition">
+                    <h4 class="font-bold text-slate-600 mb-4 text-base md:text-lg">Gadgets Grand Public</h4>
+                    <p class="text-xs text-slate-500 mb-4 md:mb-6 italic">Ex: AirTags, SmartTags...</p>
+                    <div class="text-xs font-bold text-orange-400 mb-1">Précision : Limitée</div>
+                    <div class="w-full bg-slate-200 h-2 rounded"><div class="h-full bg-orange-400 w-3/12 rounded"></div></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PARTIE 5: COMMERCE & RETAIL -->
+        <section class="bg-white p-6 md:p-8 rounded-2xl shadow-lg border-l-8 border-brand-accent">
+            <div class="flex flex-col md:flex-row md:items-center gap-4 mb-6 md:mb-8">
+                <div class="bg-brand-accent text-white px-3 py-1 rounded text-sm font-bold w-fit">COMMERCE & RETAIL</div>
+                <h2 class="text-xl md:text-2xl font-bold text-slate-900">5. Commerce : Transformer le Magasin en Data</h2>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                <!-- Texte explicatif -->
+                <div>
+                    <p class="text-slate-600 mb-6 text-base md:text-lg">
+                        Sur un site web, on sait tout (clics, temps passé). En magasin, c'est le trou noir. <br>
+                        <strong>Notre système apporte "Google Analytics" dans le monde réel.</strong>
+                    </p>
+                    
+                    <div class="space-y-4">
+                        <div class="bg-slate-50 p-4 rounded-lg border border-slate-100">
+                            <h4 class="font-bold text-slate-800 text-sm mb-1">📈 Taux de Transformation Physique</h4>
+                            <p class="text-xs text-slate-600">"100 personnes passent devant le rayon Promo, seulement 5 s'arrêtent." -> <span class="text-red-500 font-bold">Action : Changer la signalétique.</span></p>
+                        </div>
+                        <div class="bg-slate-50 p-4 rounded-lg border border-slate-100">
+                            <h4 class="font-bold text-slate-800 text-sm mb-1">⏱️ Dwell Time (Temps d'Engagement)</h4>
+                            <p class="text-xs text-slate-600">Mesure précise du temps passé devant un produit, même sans achat.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Simulation Dashboard Heatmap -->
+                <div class="bg-slate-50 p-3 md:p-4 rounded-xl border border-slate-200 shadow-inner overflow-hidden">
+                    <div class="flex justify-between items-center mb-2">
+                        <h4 class="text-[10px] md:text-xs font-bold text-slate-500 uppercase">Analyse Trafic Magasin (Vue Dessus)</h4>
+                        <div class="flex gap-2 text-[8px] md:text-[10px] font-bold">
+                            <span class="flex items-center"><div class="w-2 h-2 rounded-full bg-red-500 mr-1"></div> Chaud</span>
+                            <span class="flex items-center"><div class="w-2 h-2 rounded-full bg-blue-500 mr-1"></div> Froid</span>
+                        </div>
+                    </div>
+                    
+                    <div class="overflow-x-auto pb-2">
+                        <div class="store-grid">
+                            <!-- Heat Zones -->
+                            <div class="heat-zone heat-red" style="width: 150px; height: 150px; top: 50%; left: 0%; transform: translate(-20%, -50%);"></div>
+                            <div class="heat-zone heat-red" style="width: 100px; height: 100px; top: 20%; left: 40%;"></div>
+                            <div class="heat-zone heat-yellow" style="width: 200px; height: 100px; top: 60%; left: 40%;"></div>
+                            <div class="heat-zone heat-blue" style="width: 100px; height: 100px; top: 10%; right: 10%;"></div>
+
+                            <!-- Elements Physiques -->
+                            <div class="shelf-block" style="grid-column: 4/6; grid-row: 2/5;">Rayon A</div>
+                            <div class="shelf-block" style="grid-column: 8/10; grid-row: 2/5;">Rayon B</div>
+                            <div class="shelf-block" style="grid-column: 4/6; grid-row: 6/8;">Rayon C</div>
+                            <div class="shelf-block" style="grid-column: 8/10; grid-row: 6/8;">Rayon D</div>
+
+                            <div class="checkout-block" style="grid-column: 11/13; grid-row: 3/7;">Caisse</div>
+                            
+                            <!-- Labels -->
+                            <div class="absolute top-1/2 left-2 transform -translate-y-1/2 text-xs font-bold text-white z-20 -rotate-90">ENTRÉE</div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4 grid grid-cols-3 gap-2 text-center">
+                        <div class="bg-white border p-2 rounded">
+                            <div class="text-[10px] text-slate-400">Visiteurs</div>
+                            <div class="font-bold text-sm md:text-base text-slate-800">1,240</div>
+                        </div>
+                        <div class="bg-white border p-2 rounded">
+                            <div class="text-[10px] text-slate-400">Temps Moy.</div>
+                            <div class="font-bold text-sm md:text-base text-brand-primary">14 min</div>
+                        </div>
+                        <div class="bg-white border p-2 rounded">
+                            <div class="text-[10px] text-slate-400">Conversion</div>
+                            <div class="font-bold text-sm md:text-base text-brand-success">18%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PARTIE 6: IMMERSION & USAGES DOMOTIQUE -->
+        <section class="bg-slate-900 text-slate-100 rounded-2xl p-6 md:p-8 shadow-2xl">
+            <div class="flex flex-col md:flex-row md:items-center gap-4 mb-8">
+                <div class="bg-white text-slate-900 px-3 py-1 rounded text-sm font-bold w-fit">IMMERSION</div>
+                <h2 class="text-xl md:text-2xl font-bold">6. L'Habitat Contextuel</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+                <!-- Use Case 1 -->
+                <div class="bg-slate-800 p-5 rounded-xl border border-slate-700 hover:border-brand-primary transition group">
+                    <div class="text-3xl mb-3 group-hover:scale-110 transition-transform">👆</div>
+                    <h4 class="font-bold text-white mb-2">Point & Control</h4>
+                    <p class="text-sm text-slate-400">Pointez votre téléphone vers une lampe ou une enceinte pour la contrôler instantanément.</p>
+                </div>
+                <!-- Use Case 2 -->
+                <div class="bg-slate-800 p-5 rounded-xl border border-slate-700 hover:border-brand-primary transition group">
+                    <div class="text-3xl mb-3 group-hover:scale-110 transition-transform">🌡️</div>
+                    <h4 class="font-bold text-white mb-2">Chauffage Suiveur</h4>
+                    <p class="text-sm text-slate-400">Le chauffage s'active uniquement là où vous êtes. Économie d'énergie massive.</p>
+                </div>
+                <!-- Use Case 3 -->
+                <div class="bg-slate-800 p-5 rounded-xl border border-slate-700 hover:border-brand-primary transition group">
+                    <div class="text-3xl mb-3 group-hover:scale-110 transition-transform">🛡️</div>
+                    <h4 class="font-bold text-white mb-2">Sécurité Invisible</h4>
+                    <p class="text-sm text-slate-400">La maison sait quand elle est vide (Alarme ON). Détection de chute senior sans caméra.</p>
+                </div>
+            </div>
+
+            <!-- Écosystème -->
+            <div class="text-center border-t border-slate-700 pt-6">
+                <p class="text-sm font-bold text-slate-400 uppercase mb-4">Compatible avec l'écosystème 2026</p>
+                <div class="flex flex-wrap justify-center gap-2 md:gap-4 opacity-90">
+                    <span class="px-3 py-1 bg-white text-black rounded font-bold text-[10px] md:text-xs">Matter</span>
+                    <span class="px-3 py-1 bg-[#0055ff] text-white rounded font-bold text-[10px] md:text-xs">Home Assistant</span>
+                    <span class="px-3 py-1 bg-gradient-to-r from-orange-500 to-yellow-500 text-white rounded font-bold text-[10px] md:text-xs">Zigbee</span>
+                    <span class="px-3 py-1 bg-black text-white rounded font-bold text-[10px] md:text-xs">Apple Home</span>
+                    <span class="px-3 py-1 bg-indigo-900 text-white rounded font-bold text-[10px] md:text-xs">Philips Hue</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- PARTIE 7: VALIDATION DU MARCHÉ (2026) -->
+        <section>
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-6">
+                <div class="mb-4 md:mb-0">
+                    <h2 class="text-2xl font-bold text-slate-900">7. Une Technologie déjà Standardisée</h2>
+                    <p class="text-slate-600 mt-2 text-sm md:text-base">
+                        En 2026, l'UWB n'est plus une option, c'est le standard mondial poussé par le consortium <strong>FiRa</strong>.
+                    </p>
+                </div>
+                <div class="bg-brand-dark text-white px-4 py-2 rounded-lg text-xs font-bold self-start md:self-auto">
+                    Standard FiRa™ & CCC
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Mobile & Wearables -->
+                <div class="bg-white p-6 rounded-xl border border-slate-200 hover:shadow-md transition flex items-start gap-4">
+                    <div class="text-3xl bg-blue-50 p-3 rounded-lg">📱</div>
+                    <div>
+                        <h4 class="font-bold text-brand-dark mb-2">Mobile & Wearables</h4>
+                        <ul class="space-y-1 text-sm text-slate-600">
+                            <li>• <strong>Apple :</strong> 100% des iPhone & Apple Watch.</li>
+                            <li>• <strong>Samsung :</strong> Écosystème Galaxy & SmartThings.</li>
+                            <li>• <strong>Google :</strong> Pixel Phones, Watch & Tablette.</li>
                         </ul>
                     </div>
                 </div>
-            </div>
-        </section>
 
-        <!-- PARTIE 2: L'OFFRE COMMERCIALE (Le Pack) -->
-        <section class="bg-white rounded-xl shadow-sm border border-slate-200 p-8 relative">
-            <div class="section-number">02</div>
-            <div class="relative z-10">
-                <h2 class="text-2xl font-bold text-corp-dark mb-2 pl-2">L'Offre "Clé en Main"</h2>
-                <p class="text-slate-500 mb-8 pl-2">Ce que le client achète concrètement.</p>
-
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-center">
-                    <div class="p-4 bg-slate-50 rounded border border-slate-100 hover:border-corp-blue transition">
-                        <div class="text-3xl mb-2">🛠️</div>
-                        <h4 class="font-bold text-slate-800 text-sm">1. Installation</h4>
-                        <p class="text-xs text-slate-500 mt-1">Audit & pose des capteurs.</p>
-                    </div>
-                    <div class="p-4 bg-slate-50 rounded border border-slate-100 hover:border-corp-blue transition">
-                        <div class="text-3xl mb-2">📦</div>
-                        <h4 class="font-bold text-slate-800 text-sm">2. Matériel</h4>
-                        <p class="text-xs text-slate-500 mt-1">Serveur local & Badges.</p>
-                    </div>
-                    <div class="p-4 bg-slate-50 rounded border border-slate-100 hover:border-corp-blue transition">
-                        <div class="text-3xl mb-2">💻</div>
-                        <h4 class="font-bold text-slate-800 text-sm">3. Logiciel</h4>
-                        <p class="text-xs text-slate-500 mt-1">Plateforme Web & Modules.</p>
-                    </div>
-                    <div class="p-4 bg-slate-50 rounded border border-slate-100 hover:border-corp-blue transition">
-                        <div class="text-3xl mb-2">🔧</div>
-                        <h4 class="font-bold text-slate-800 text-sm">4. Service</h4>
-                        <p class="text-xs text-slate-500 mt-1">Maintenance & Support.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- PARTIE 3: ARCHITECTURE TECHNIQUE (Animation) -->
-        <section class="bg-white rounded-xl shadow-md border border-slate-200 p-8 relative">
-            <div class="section-number">03</div>
-            <div class="relative z-10">
-                <div class="flex justify-between items-start mb-6">
+                <!-- Maison & Access -->
+                <div class="bg-white p-6 rounded-xl border border-slate-200 hover:shadow-md transition flex items-start gap-4">
+                    <div class="text-3xl bg-purple-50 p-3 rounded-lg">🏠</div>
                     <div>
-                        <h2 class="text-2xl font-bold text-corp-dark mb-2 pl-2">Fonctionnement Technique</h2>
-                        <p class="text-slate-500 max-w-lg pl-2">Infrastructure filaire robuste pour une fiabilité industrielle.</p>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 h-80">
-                    <!-- Canvas Animation -->
-                    <div class="border border-slate-300 rounded-lg overflow-hidden relative shadow-inner bg-slate-50">
-                        <canvas id="simulationCanvas"></canvas>
-                        <div class="absolute bottom-2 right-2 text-[10px] text-slate-400 bg-white/80 px-2 rounded">Simulation Flux</div>
-                    </div>
-
-                    <!-- Légende -->
-                    <div class="flex flex-col justify-center space-y-6 pl-4">
-                        <div class="flex items-start gap-4">
-                            <div class="w-8 h-8 rounded bg-slate-800 text-white flex items-center justify-center font-bold text-sm flex-shrink-0">1</div>
-                            <div>
-                                <h4 class="font-bold text-slate-800 text-sm">Infrastructure (Câblée)</h4>
-                                <p class="text-xs text-slate-500">Ancres reliées en série par câbles. Captent le signal.</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start gap-4">
-                            <div class="w-8 h-8 rounded bg-corp-blue text-white flex items-center justify-center font-bold text-sm flex-shrink-0">2</div>
-                            <div>
-                                <h4 class="font-bold text-slate-800 text-sm">La Centrale (Serveur)</h4>
-                                <p class="text-xs text-slate-500">Traite les données et calcule la position mathématique.</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start gap-4">
-                            <div class="w-8 h-8 rounded bg-corp-accent text-white flex items-center justify-center font-bold text-sm flex-shrink-0">3</div>
-                            <div>
-                                <h4 class="font-bold text-slate-800 text-sm">Les Modules (Software)</h4>
-                                <p class="text-xs text-slate-500">Interface client (Alertes, Cartes, Analytics).</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- PARTIE 4: POSITIONNEMENT (Le Gap) -->
-        <section class="bg-white rounded-xl shadow-sm border border-slate-200 p-8 relative">
-            <div class="section-number">04</div>
-            <div class="relative z-10">
-                <h2 class="text-2xl font-bold text-corp-dark mb-6 pl-2">L'Opportunité de Marché</h2>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center items-end">
-                    <div class="p-6 bg-slate-50 rounded opacity-60">
-                        <h4 class="font-bold text-slate-600 mb-2">Industrie Lourde</h4>
-                        <div class="w-full bg-slate-200 h-2 rounded mb-1"><div class="h-full bg-red-500 w-full rounded"></div></div>
-                        <p class="text-[10px] text-red-500 font-bold uppercase">Trop Cher</p>
-                    </div>
-                    <div class="p-8 bg-white rounded shadow-xl border-t-4 border-corp-blue transform scale-105 z-20">
-                        <span class="bg-corp-blue text-white px-2 py-1 rounded text-[10px] font-bold uppercase mb-2 inline-block">Notre Projet</span>
-                        <h4 class="font-bold text-corp-dark mb-4 text-lg">Le Point d'Équilibre</h4>
-                        <div class="w-full bg-slate-200 h-2 rounded mb-1"><div class="h-full bg-corp-success w-1/2 rounded"></div></div>
-                        <p class="text-[10px] text-corp-success font-bold uppercase mb-4">Prix Accessible</p>
-                        <div class="w-full bg-slate-200 h-2 rounded mb-1"><div class="h-full bg-corp-success w-full rounded"></div></div>
-                        <p class="text-[10px] text-corp-success font-bold uppercase">Performance Pro</p>
-                    </div>
-                    <div class="p-6 bg-slate-50 rounded opacity-60">
-                        <h4 class="font-bold text-slate-600 mb-2">Gadgets Grand Public</h4>
-                        <div class="w-full bg-slate-200 h-2 rounded mb-1"><div class="h-full bg-orange-400 w-1/4 rounded"></div></div>
-                        <p class="text-[10px] text-orange-400 font-bold uppercase">Pas assez précis</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- PARTIE 5: FOCUS RETAIL (Dashboard) -->
-        <section class="bg-white rounded-xl shadow-md border border-slate-200 p-8 relative">
-            <div class="section-number">05</div>
-            <div class="relative z-10">
-                <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-2xl font-bold text-corp-dark pl-2">Cas d'Usage : Commerce (Retail)</h2>
-                    <span class="bg-corp-accent/10 text-corp-accent px-3 py-1 rounded-full text-xs font-bold">Analyse de Données</span>
-                </div>
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    <!-- Dashboard -->
-                    <div class="bg-slate-50 p-4 rounded border border-slate-200">
-                        <h4 class="text-xs font-bold text-slate-500 uppercase mb-2 text-center">Heatmap Magasin</h4>
-                        <div class="store-grid mb-4">
-                            <div class="heat-zone heat-red" style="width: 120px; height: 120px; top: 80%; left: 10%;"></div>
-                            <div class="heat-zone heat-red" style="width: 80px; height: 80px; top: 30%; left: 30%;"></div>
-                            <div class="heat-zone heat-yellow" style="width: 150px; height: 80px; top: 50%; left: 50%;"></div>
-                            <div class="shelf-block" style="grid-column: 4/6; grid-row: 2/5;">PROMO</div>
-                            <div class="shelf-block" style="grid-column: 8/10; grid-row: 2/5;">BIO</div>
-                            <div class="shelf-block" style="grid-column: 4/6; grid-row: 6/8;">VRAC</div>
-                            <div class="shelf-block" style="grid-column: 8/10; grid-row: 6/8;">VINS</div>
-                            <div class="checkout-block" style="grid-column: 11/13; grid-row: 3/7;">CAISSE</div>
-                            <div class="absolute bottom-2 left-2 text-[10px] font-bold text-slate-400">ENTRÉE</div>
-                        </div>
-                        <div class="flex justify-around text-center">
-                            <div><span class="block text-xl font-bold text-slate-800">14 min</span><span class="text-[10px] text-slate-500">Temps Moyen</span></div>
-                            <div><span class="block text-xl font-bold text-corp-success">18%</span><span class="text-[10px] text-slate-500">Conversion</span></div>
-                        </div>
-                    </div>
-                    <!-- Argumentaire -->
-                    <div class="flex flex-col justify-center">
-                        <p class="text-slate-600 mb-6 font-medium">Nous transformons le magasin physique en site web analysable.</p>
-                        <ul class="space-y-4">
-                            <li class="flex items-start gap-3"><span class="text-xl">🗺️</span><div><strong class="text-sm text-slate-800">Zones Froides</strong><p class="text-xs text-slate-500">Identifier les rayons ignorés.</p></div></li>
-                            <li class="flex items-start gap-3"><span class="text-xl">⏱️</span><div><strong class="text-sm text-slate-800">Attractivité</strong><p class="text-xs text-slate-500">Mesurer le temps d'arrêt devant une vitrine.</p></div></li>
-                            <li class="flex items-start gap-3"><span class="text-xl">📈</span><div><strong class="text-sm text-slate-800">Staffing</strong><p class="text-xs text-slate-500">Alerte file d'attente en caisse.</p></div></li>
+                        <h4 class="font-bold text-brand-dark mb-2">Smart Home & Accès</h4>
+                        <ul class="space-y-1 text-sm text-slate-600">
+                            <li>• <strong>Amazon/Google :</strong> Détection de présence (Echo/Nest).</li>
+                            <li>• <strong>Serrures :</strong> Yale, August (Ouverture sans contact).</li>
+                            <li>• <strong>HID Global :</strong> Badges d'entreprise dématérialisés.</li>
                         </ul>
                     </div>
                 </div>
-            </div>
-        </section>
 
-        <!-- PARTIE 6: L'HABITAT CONTEXTUEL -->
-        <section class="bg-white rounded-xl shadow-sm border border-slate-200 p-8 relative">
-            <div class="section-number">06</div>
-            <div class="relative z-10">
-                <h2 class="text-2xl font-bold text-corp-dark mb-6 pl-2">L'Habitat Contextuel</h2>
-                
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-                    <!-- Case 1 -->
-                    <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 hover:border-corp-blue transition group text-center">
-                        <div class="text-3xl mb-3 group-hover:scale-110 transition-transform">👆</div>
-                        <h4 class="font-bold text-slate-800 mb-2">Point & Control</h4>
-                        <p class="text-sm text-slate-600">Pointez votre téléphone vers une lampe ou une enceinte pour la contrôler instantanément.</p>
-                    </div>
-                    <!-- Case 2 -->
-                    <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 hover:border-corp-blue transition group text-center">
-                        <div class="text-3xl mb-3 group-hover:scale-110 transition-transform">🌡️</div>
-                        <h4 class="font-bold text-slate-800 mb-2">Chauffage Suiveur</h4>
-                        <p class="text-sm text-slate-600">Le chauffage s'active uniquement là où vous êtes. Économie d'énergie massive.</p>
-                    </div>
-                    <!-- Case 3 -->
-                    <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 hover:border-corp-blue transition group text-center">
-                        <div class="text-3xl mb-3 group-hover:scale-110 transition-transform">🛡️</div>
-                        <h4 class="font-bold text-slate-800 mb-2">Sécurité Invisible</h4>
-                        <p class="text-sm text-slate-600">La maison sait quand elle est vide (Alarme ON). Détection de chute senior sans caméra.</p>
-                    </div>
-                </div>
-
-                <!-- Écosystème -->
-                <div class="text-center border-t border-slate-100 pt-6">
-                    <p class="text-xs font-bold text-slate-400 uppercase mb-4">Compatible avec l'écosystème 2026</p>
-                    <div class="flex flex-wrap justify-center gap-4 opacity-80">
-                        <span class="px-3 py-1 bg-white border border-slate-200 text-black rounded font-bold text-xs">Matter</span>
-                        <span class="px-3 py-1 bg-blue-500 text-white rounded font-bold text-xs">Home Assistant</span>
-                        <span class="px-3 py-1 bg-orange-500 text-white rounded font-bold text-xs">Zigbee</span>
-                        <span class="px-3 py-1 bg-black text-white rounded font-bold text-xs">Apple Home</span>
-                        <span class="px-3 py-1 bg-indigo-900 text-white rounded font-bold text-xs">Philips Hue</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- PARTIE 7: UNE TECHNOLOGIE STANDARDISÉE -->
-        <section class="bg-white rounded-xl shadow-sm border border-slate-200 p-8 relative">
-            <div class="section-number">07</div>
-            <div class="relative z-10">
-                <div class="flex justify-between items-end mb-6">
+                <!-- Automobile -->
+                <div class="bg-white p-6 rounded-xl border border-slate-200 hover:shadow-md transition flex items-start gap-4">
+                    <div class="text-3xl bg-orange-50 p-3 rounded-lg">🚗</div>
                     <div>
-                        <h2 class="text-2xl font-bold text-corp-dark pl-2">Une Technologie Validée</h2>
-                        <p class="text-slate-500 mt-2 pl-2">En 2026, l'UWB est le standard mondial.</p>
+                        <h4 class="font-bold text-brand-dark mb-2">Automobile (Digital Key)</h4>
+                        <p class="text-xs text-slate-400 mb-2">Standard mondial d'ouverture sans clé.</p>
+                        <div class="flex flex-wrap gap-2 text-xs font-bold text-slate-600">
+                            <span class="bg-slate-100 px-2 py-1 rounded">BMW</span>
+                            <span class="bg-slate-100 px-2 py-1 rounded">Audi</span>
+                            <span class="bg-slate-100 px-2 py-1 rounded">Tesla</span>
+                            <span class="bg-slate-100 px-2 py-1 rounded">VW</span>
+                        </div>
                     </div>
-                    <span class="bg-slate-800 text-white px-3 py-1 rounded text-xs font-bold">Standard FiRa™</span>
                 </div>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="bg-slate-50 p-6 rounded-xl border border-slate-200 flex items-start gap-4">
-                        <div class="text-3xl bg-white p-3 rounded-lg shadow-sm">📱</div>
-                        <div>
-                            <h4 class="font-bold text-corp-dark mb-2">Mobile & Wearables</h4>
-                            <ul class="space-y-1 text-sm text-slate-600">
-                                <li>• <strong>Apple :</strong> 100% des iPhone & Apple Watch.</li>
-                                <li>• <strong>Samsung :</strong> Écosystème Galaxy & SmartThings.</li>
-                                <li>• <strong>Google :</strong> Pixel Phones, Watch & Tablette.</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="bg-slate-50 p-6 rounded-xl border border-slate-200 flex items-start gap-4">
-                        <div class="text-3xl bg-white p-3 rounded-lg shadow-sm">🏠</div>
-                        <div>
-                            <h4 class="font-bold text-corp-dark mb-2">Smart Home & Accès</h4>
-                            <ul class="space-y-1 text-sm text-slate-600">
-                                <li>• <strong>Amazon/Google :</strong> Détection de présence (Echo/Nest).</li>
-                                <li>• <strong>Serrures :</strong> Yale, August (Ouverture sans contact).</li>
-                                <li>• <strong>HID Global :</strong> Badges d'entreprise dématérialisés.</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="bg-slate-50 p-6 rounded-xl border border-slate-200 flex items-start gap-4">
-                        <div class="text-3xl bg-white p-3 rounded-lg shadow-sm">🚗</div>
-                        <div>
-                            <h4 class="font-bold text-corp-dark mb-2">Automobile (Digital Key)</h4>
-                            <p class="text-xs text-slate-500 mb-2">Standard mondial d'ouverture sans clé.</p>
-                            <div class="flex flex-wrap gap-2 text-xs font-bold text-slate-600">
-                                <span class="bg-white px-2 py-1 rounded border">BMW</span>
-                                <span class="bg-white px-2 py-1 rounded border">Tesla</span>
-                                <span class="bg-white px-2 py-1 rounded border">VW</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="bg-slate-50 p-6 rounded-xl border border-slate-200 flex items-start gap-4">
-                        <div class="text-3xl bg-white p-3 rounded-lg shadow-sm">🏭</div>
-                        <div>
-                            <h4 class="font-bold text-corp-dark mb-2">Industrie & Retail</h4>
-                            <ul class="space-y-1 text-sm text-slate-600">
-                                <li>• <strong>Siemens/Bosch :</strong> Robots autonomes.</li>
-                                <li>• <strong>Paiement :</strong> Validation sans contact (NFC Next-Gen).</li>
-                            </ul>
-                        </div>
+
+                <!-- Industrie -->
+                <div class="bg-white p-6 rounded-xl border border-slate-200 hover:shadow-md transition flex items-start gap-4">
+                    <div class="text-3xl bg-green-50 p-3 rounded-lg">🏭</div>
+                    <div>
+                        <h4 class="font-bold text-brand-dark mb-2">Industrie & Retail</h4>
+                        <ul class="space-y-1 text-sm text-slate-600">
+                            <li>• <strong>Siemens/Bosch :</strong> Robots autonomes et outillage.</li>
+                            <li>• <strong>Paiement :</strong> Validation sans contact (NFC Next-Gen).</li>
+                        </ul>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- PARTIE 8: MODÈLE DE REVENUS -->
-        <section class="bg-white rounded-xl shadow-md border-l-8 border-corp-success p-8 relative">
-            <div class="section-number">08</div>
-            <div class="relative z-10">
-                <h2 class="text-2xl font-bold text-corp-dark mb-6 pl-2">Rentabilité & Business Model</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-                    <div class="chart-container">
-                        <canvas id="revenueChart"></canvas>
+        <section class="bg-slate-50 border-t border-slate-200 pt-10">
+            <h2 class="text-2xl font-bold text-slate-900 mb-8">8. Modèle de Rentabilité</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <!-- Camembert -->
+                <div class="bg-white p-6 rounded-xl shadow-lg border border-slate-100 flex flex-col items-center">
+                    <h4 class="text-center text-xs font-bold text-slate-400 uppercase mb-4">Structure de Chiffre d'Affaires</h4>
+                    <div class="chart-container" style="height: 250px; width: 100%;">
+                        <canvas id="revenuePieChart"></canvas>
                     </div>
-                    <div class="space-y-4">
-                        <div class="flex gap-3">
-                            <div class="w-1 bg-corp-dark rounded"></div>
-                            <div>
-                                <h4 class="font-bold text-sm text-slate-800">1. Matériel (35%)</h4>
-                                <p class="text-xs text-slate-500">Vente "One-shot" à l'installation. Trésorerie immédiate.</p>
-                            </div>
+                </div>
+
+                <!-- Légende Explicative -->
+                <div class="space-y-6">
+                    <div class="flex gap-4 p-4 rounded-lg bg-white border border-slate-100 shadow-sm">
+                        <div class="w-10 h-10 rounded-full bg-slate-800 text-white flex items-center justify-center font-bold text-lg flex-shrink-0">1</div>
+                        <div>
+                            <h4 class="font-bold text-slate-800">Vente Matériel (Cashflow)</h4>
+                            <p class="text-sm text-slate-600">Vente des kits à l'installation. Couvre les coûts fixes et l'acquisition client.</p>
                         </div>
-                        <div class="flex gap-3">
-                            <div class="w-1 bg-corp-accent rounded"></div>
-                            <div>
-                                <h4 class="font-bold text-sm text-corp-accent">2. Abonnements (50%) - Le Cœur</h4>
-                                <p class="text-xs text-slate-500">Licences logicielles récurrentes. Marge brute > 80%.</p>
-                            </div>
+                    </div>
+                    <div class="flex gap-4 p-4 rounded-lg bg-white border-l-4 border-brand-accent shadow-sm">
+                        <div class="w-10 h-10 rounded-full bg-brand-accent text-white flex items-center justify-center font-bold text-lg flex-shrink-0">2</div>
+                        <div>
+                            <h4 class="font-bold text-brand-accent">Abonnements Logiciels (Marge)</h4>
+                            <p class="text-sm text-slate-600">Revenus récurrents. Une fois le logiciel développé, la rentabilité est maximale sur chaque nouveau client.</p>
                         </div>
-                        <div class="flex gap-3">
-                            <div class="w-1 bg-corp-blue rounded"></div>
-                            <div>
-                                <h4 class="font-bold text-sm text-corp-blue">3. Services (15%)</h4>
-                                <p class="text-xs text-slate-500">Maintenance et exploitation de la donnée (Data).</p>
-                            </div>
+                    </div>
+                    <div class="flex gap-4 p-4 rounded-lg bg-white border border-slate-100 shadow-sm">
+                        <div class="w-10 h-10 rounded-full bg-brand-primary text-white flex items-center justify-center font-bold text-lg flex-shrink-0">3</div>
+                        <div>
+                            <h4 class="font-bold text-brand-primary">Services & Maintenance</h4>
+                            <p class="text-sm text-slate-600">Contrats de support, analyses de données et mises à jour.</p>
                         </div>
                     </div>
                 </div>
@@ -412,95 +491,204 @@
 
     </main>
 
-    <!-- JS -->
+    <footer class="bg-brand-dark text-slate-500 py-10 text-center text-sm">
+        <p>Support de discussion CCI</p>
+    </footer>
+
+    <!-- LOGIQUE JAVASCRIPT (ANIMATION CANVAS + CHARTS) -->
     <script>
-        // --- ANIMATION CANVAS ---
+        // --- ANIMATION CANVAS PARTIE 2 ---
         const canvas = document.getElementById('simulationCanvas');
         const ctx = canvas.getContext('2d');
         
+        // Ajuster la résolution
         const resizeCanvas = () => {
-            const parent = canvas.parentNode;
-            canvas.width = parent.clientWidth;
-            canvas.height = parent.clientHeight;
+            const rect = canvas.parentNode.getBoundingClientRect();
+            canvas.width = rect.width;
+            canvas.height = rect.height;
         };
         window.addEventListener('resize', resizeCanvas);
         resizeCanvas();
 
-        const cablesColor = '#94a3b8';
-        const serverColor = '#1e293b';
-        const dataColor = '#10b981';
-        let packets = [], tag = { x: 0.5, y: 0.5, angle: 0 };
+        // Config
+        let packets = [];
+        let tag = { x: 0.5, y: 0.5, angle: 0 };
+        const cablesColor = '#334155'; // Dark Grey for Cables
 
-        function drawSystem() {
-            const w = canvas.width, h = canvas.height, pad = 30;
-            const tl = {x: pad, y: pad}, tr = {x: w-pad, y: pad};
-            const bl = {x: pad, y: h-pad}, br = {x: w-pad, y: h-pad};
-            const server = {x: w/2, y: h-pad};
+        // Fonction pour dessiner une ancre
+        function drawAnchor(x, y) {
+            ctx.fillStyle = '#0f172a';
+            ctx.fillRect(x - 12, y - 12, 24, 24);
+            ctx.fillStyle = 'white';
+            ctx.font = '14px Arial';
+            ctx.fillText("📡", x - 8, y + 5);
+        }
 
-            ctx.clearRect(0,0,w,h);
+        // Fonction pour dessiner la centrale
+        function drawServer(x, y) {
+            ctx.fillStyle = '#1e293b';
+            ctx.fillRect(x - 40, y - 20, 80, 40);
+            ctx.fillStyle = 'white';
+            ctx.font = '10px sans-serif';
+            ctx.fillText("CENTRALE", x - 26, y + 4);
+        }
 
-            // Cables
-            ctx.beginPath(); ctx.strokeStyle = cablesColor; ctx.lineWidth = 3;
-            ctx.moveTo(tl.x, tl.y); ctx.lineTo(bl.x, bl.y);
-            ctx.moveTo(tr.x, tr.y); ctx.lineTo(br.x, br.y);
-            ctx.moveTo(bl.x, bl.y); ctx.lineTo(br.x, br.y);
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const w = canvas.width;
+            const h = canvas.height;
+            const padding = 40;
+
+            // Définir les positions fixes
+            const topLeft = { x: padding, y: padding };
+            const topRight = { x: w - padding, y: padding };
+            const bottomLeft = { x: padding, y: h - padding };
+            const bottomRight = { x: w - padding, y: h - padding };
+            const server = { x: w / 2, y: h - padding };
+
+            // 1. DESSINER LES CÂBLES (Bords de la zone)
+            ctx.beginPath();
+            ctx.strokeStyle = cablesColor;
+            ctx.lineWidth = 4;
+            // Câble Gauche (Haut -> Bas)
+            ctx.moveTo(topLeft.x, topLeft.y);
+            ctx.lineTo(bottomLeft.x, bottomLeft.y);
+            // Câble Bas (Gauche -> Droite)
+            ctx.lineTo(bottomRight.x, bottomRight.y);
+            // Câble Droit (Bas -> Haut)
+            ctx.lineTo(topRight.x, topRight.y);
             ctx.stroke();
 
-            // Anchors & Server
-            const drawAnchor = (p) => { ctx.fillStyle = serverColor; ctx.fillRect(p.x-8, p.y-8, 16, 16); };
-            [tl, tr, bl, br].forEach(drawAnchor);
-            ctx.fillRect(server.x-25, server.y-15, 50, 30); ctx.fillStyle='white'; ctx.font='10px Arial'; ctx.fillText("SRV", server.x-10, server.y+4);
+            // 2. DESSINER LES ANCRES & CENTRALE
+            drawAnchor(topLeft.x, topLeft.y);
+            drawAnchor(topRight.x, topRight.y);
+            drawAnchor(bottomLeft.x, bottomLeft.y);
+            drawAnchor(bottomRight.x, bottomRight.y);
+            drawServer(server.x, server.y);
 
-            // Tag
-            tag.angle += 0.005;
-            tag.x = 0.5 + Math.cos(tag.angle)*0.25; tag.y = 0.4 + Math.sin(tag.angle*1.3)*0.2;
-            const tx = tag.x*w, ty = tag.y*h;
-            ctx.beginPath(); ctx.arc(tx, ty, 6, 0, Math.PI*2); ctx.fillStyle = '#ef4444'; ctx.fill(); ctx.strokeStyle='white'; ctx.lineWidth=2; ctx.stroke();
+            // 3. BOUGER LE TAG (Point Rouge) - Mouvement aléatoire fluide
+            tag.angle += 0.005; // Ralenti
+            tag.x = 0.5 + Math.cos(tag.angle) * 0.3;
+            tag.y = 0.5 + Math.sin(tag.angle * 1.5) * 0.2;
+            const tx = tag.x * w;
+            const ty = tag.y * h;
 
-            // Signals & Packets
-            ctx.setLineDash([4,4]); ctx.strokeStyle = '#cbd5e1'; ctx.lineWidth = 1;
-            [tl, tr, bl, br].forEach((a, idx) => {
-                ctx.beginPath(); ctx.moveTo(tx, ty); ctx.lineTo(a.x, a.y); ctx.stroke();
-                if(Math.random() < 0.015) {
+            // Dessiner Tag
+            ctx.beginPath();
+            ctx.arc(tx, ty, 8, 0, Math.PI * 2);
+            ctx.fillStyle = '#ef4444';
+            ctx.fill();
+            ctx.strokeStyle = 'white';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // 4. SIGNAL RADIO (Lignes pointillées Tag -> Ancres)
+            ctx.setLineDash([5, 5]);
+            ctx.strokeStyle = '#3b82f6';
+            ctx.lineWidth = 1;
+            const anchors = [topLeft, topRight, bottomLeft, bottomRight];
+            
+            anchors.forEach((a, index) => {
+                ctx.beginPath();
+                ctx.moveTo(tx, ty);
+                ctx.lineTo(a.x, a.y);
+                ctx.stroke();
+
+                // Générer des paquets de données (Points Verts)
+                if(Math.random() < 0.02) { // Un peu plus fréquent pour l'effet
+                    // Définir le chemin (Path) pour chaque ancre vers le serveur
                     let path = [];
-                    if(idx===0) path = [tl, bl, server];
-                    if(idx===1) path = [tr, br, server];
-                    if(idx===2) path = [bl, server];
-                    if(idx===3) path = [br, server];
-                    packets.push({path, seg:0, t:0});
+                    if(index === 0) path = [topLeft, bottomLeft, server]; // TL -> BL -> Server
+                    if(index === 1) path = [topRight, bottomRight, server]; // TR -> BR -> Server
+                    if(index === 2) path = [bottomLeft, server]; // BL -> Server
+                    if(index === 3) path = [bottomRight, server]; // BR -> Server
+                    
+                    packets.push({
+                        path: path,
+                        currentSegment: 0,
+                        progress: 0
+                    });
                 }
             });
 
-            ctx.setLineDash([]); ctx.fillStyle = dataColor;
-            for(let i=packets.length-1; i>=0; i--){
+            // 5. ANIMER LES PAQUETS SUR LES CÂBLES
+            ctx.setLineDash([]);
+            ctx.fillStyle = '#10b981'; // Vert Data
+            
+            for(let i = packets.length - 1; i >= 0; i--) {
                 let p = packets[i];
-                p.t += 0.015;
-                if(p.t >= 1) { p.t = 0; p.seg++; if(p.seg >= p.path.length-1) { packets.splice(i,1); continue; } }
-                const p1 = p.path[p.seg], p2 = p.path[p.seg+1];
-                const cx = p1.x + (p2.x - p1.x)*p.t, cy = p1.y + (p2.y - p1.y)*p.t;
-                ctx.beginPath(); ctx.arc(cx, cy, 3, 0, Math.PI*2); ctx.fill();
-            }
-            requestAnimationFrame(drawSystem);
-        }
-        drawSystem();
+                p.progress += 0.02; // Vitesse sur le câble
+                
+                const startNode = p.path[p.currentSegment];
+                const endNode = p.path[p.currentSegment + 1];
+                
+                // Interpolation
+                const curX = startNode.x + (endNode.x - startNode.x) * p.progress;
+                const curY = startNode.y + (endNode.y - startNode.y) * p.progress;
 
-        // --- CHART ---
+                ctx.beginPath();
+                ctx.arc(curX, curY, 3, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Gestion des segments
+                if(p.progress >= 1) {
+                    p.progress = 0;
+                    p.currentSegment++;
+                    if(p.currentSegment >= p.path.length - 1) {
+                        packets.splice(i, 1); // Arrivé au serveur
+                    }
+                }
+            }
+
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+
+        // --- CHART JS ---
         Chart.defaults.font.family = "'Outfit', sans-serif";
-        new Chart(document.getElementById('revenueChart'), {
+        Chart.defaults.color = '#64748b';
+
+        // 1. Chart Précision
+        new Chart(document.getElementById('precisionChart'), {
+            type: 'bar',
+            data: {
+                labels: ['GPS', 'Bluetooth/Wi-Fi', 'Notre UWB'],
+                datasets: [{
+                    label: 'Marge d\'erreur (Mètres)',
+                    data: [5, 3, 0.1],
+                    backgroundColor: ['#cbd5e1', '#cbd5e1', '#2563eb'],
+                    borderRadius: 4, barThickness: 25
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: { x: { display: true, title: {display: true, text: 'Précision (Plus petit est mieux)'} } }
+            }
+        });
+
+        // 2. Chart Revenue Pie
+        new Chart(document.getElementById('revenuePieChart'), {
             type: 'doughnut',
             data: {
-                labels: ['Matériel', 'Abonnements', 'Services'],
+                labels: ['Matériel (35%)', 'Logiciels/Abonnements (50%)', 'Services (15%)'],
                 datasets: [{
                     data: [35, 50, 15],
-                    backgroundColor: ['#1e293b', '#6366f1', '#2563eb'],
-                    borderWidth: 0
+                    backgroundColor: ['#1e293b', '#7c3aed', '#2563eb'], // Dark, Violet, Blue
+                    borderWidth: 0,
+                    hoverOffset: 10
                 }]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                cutout: '70%',
-                plugins: { legend: { display: false } }
+                cutout: '60%',
+                plugins: {
+                    legend: { position: 'bottom', labels: { boxWidth: 10, font: {size: 11} } }
+                }
             }
         });
     </script>
