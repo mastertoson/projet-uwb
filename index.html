@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dossier Projet - Entretien CCI</title>
+    <title>Présentation Projet - Support Entretien</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -85,117 +85,118 @@
 
     <main class="max-w-6xl mx-auto px-6 py-10 space-y-16">
 
-        <!-- PARTIE 1: SYNTHÈSE DU PROJET (ID CARD) -->
+        <!-- PARTIE 1: LE CONCEPT (VULGARISÉ) -->
         <section class="bg-white rounded-xl shadow-md border-l-8 border-corp-blue p-8 relative overflow-hidden">
             <div class="section-number">01</div>
             <div class="relative z-10">
-                <h2 class="text-2xl font-bold text-corp-dark mb-6 pl-2">Fiche d'Identité du Projet</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <h2 class="text-2xl font-bold text-corp-dark mb-6 pl-2">Le Concept : Le GPS pour l'Intérieur</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+                    <!-- Explication Simple -->
                     <div>
-                        <h3 class="text-sm font-bold text-slate-400 uppercase mb-3">La Proposition de Valeur</h3>
-                        <p class="text-lg font-medium text-slate-800 mb-4 leading-relaxed">
-                            Création d'une <strong>plateforme universelle de spatialisation</strong> indoor.
+                        <p class="text-xl font-bold text-slate-800 mb-4 leading-relaxed">
+                            À l'extérieur, vous utilisez le GPS pour savoir où vous êtes. <br>
+                            <span class="text-corp-blue">À l'intérieur, le GPS ne capte pas.</span>
                         </p>
                         <p class="text-slate-600 mb-4 text-justify">
-                            Contrairement aux solutions fermées (silos), nous vendons une <strong>infrastructure ouverte</strong>. Nous installons un réseau physique unique, sur lequel le client active des modules logiciels selon ses besoins.
+                            Mon projet résout ce problème. J'installe un système qui permet de localiser n'importe quel objet ou personne à l'intérieur d'un bâtiment, avec une précision de 10 cm.
                         </p>
-                        <div class="flex gap-2 mt-4">
-                            <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-xs font-bold">Hardware + SaaS</span>
-                            <span class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-xs font-bold">Modulaire</span>
-                            <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-bold">Scalable</span>
-                        </div>
-                    </div>
-                    <div class="bg-slate-50 p-6 rounded-lg border border-slate-200">
-                        <ul class="space-y-4">
-                            <li class="flex justify-between border-b border-slate-200 pb-2">
-                                <span class="text-slate-500 text-sm">Technologie Cœur</span>
-                                <span class="font-bold text-corp-dark">UWB (Ultra-Wideband)</span>
-                            </li>
-                            <li class="flex justify-between border-b border-slate-200 pb-2">
-                                <span class="text-slate-500 text-sm">Précision</span>
-                                <span class="font-bold text-corp-dark">10 cm (Classe Industrielle)</span>
-                            </li>
-                            <li class="flex justify-between pt-2">
-                                <span class="text-slate-500 text-sm">Cibles</span>
-                                <span class="font-bold text-corp-dark text-right">Industrie, Retail, Habitat</span>
-                            </li>
+                        <p class="text-slate-600 mb-4">
+                            Cela permet de répondre à des questions simples mais coûteuses :
+                        </p>
+                        <ul class="list-disc pl-5 space-y-2 text-slate-700 font-medium">
+                            <li>"Où est le chariot élévateur ?" (Usine)</li>
+                            <li>"Où sont les clients dans mon magasin ?" (Commerce)</li>
+                            <li>"Est-ce que j'ai éteint la lumière en sortant ?" (Maison)</li>
                         </ul>
+                    </div>
+
+                    <!-- Analogie Visuelle -->
+                    <div class="bg-blue-50 p-6 rounded-xl border border-blue-100 text-center">
+                        <div class="text-4xl mb-3">📡 + 📍 = 💡</div>
+                        <h3 class="font-bold text-corp-dark mb-2">Une Infrastructure Unique</h3>
+                        <p class="text-sm text-slate-600">
+                            Comme l'électricité ou le Wi-Fi, on installe le réseau <strong>une seule fois</strong>.
+                            Ensuite, on l'utilise pour la sécurité, le chauffage, ou la logistique, sans refaire de travaux.
+                        </p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- PARTIE 2: L'OFFRE COMMERCIALE (Le Pack) -->
+        <!-- PARTIE 2: L'OFFRE (DÉTAILLÉE MAIS SIMPLE) -->
         <section class="bg-white rounded-xl shadow-sm border border-slate-200 p-8 relative">
             <div class="section-number">02</div>
             <div class="relative z-10">
-                <h2 class="text-2xl font-bold text-corp-dark mb-2 pl-2">L'Offre "Clé en Main"</h2>
-                <p class="text-slate-500 mb-8 pl-2">Ce que le client achète concrètement.</p>
+                <h2 class="text-2xl font-bold text-corp-dark mb-2 pl-2">Ce que nous vendons (Le Pack)</h2>
+                <p class="text-slate-500 mb-8 pl-2">Nous ne vendons pas des composants électroniques, nous vendons une solution complète installée.</p>
 
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-center">
-                    <div class="p-4 bg-slate-50 rounded border border-slate-100 hover:border-corp-blue transition">
-                        <div class="text-3xl mb-2">🛠️</div>
-                        <h4 class="font-bold text-slate-800 text-sm">1. Installation</h4>
-                        <p class="text-xs text-slate-500 mt-1">Audit & pose des capteurs.</p>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                    <div class="p-6 bg-slate-50 rounded-xl border border-slate-100 hover:border-corp-blue transition text-center group">
+                        <div class="text-4xl mb-3 group-hover:scale-110 transition-transform">👷‍♂️</div>
+                        <h4 class="font-bold text-slate-800 mb-2">1. L'Installation</h4>
+                        <p class="text-sm text-slate-600">Nos équipes viennent poser les capteurs au plafond et tirent les câbles. Le client n'a rien à faire.</p>
                     </div>
-                    <div class="p-4 bg-slate-50 rounded border border-slate-100 hover:border-corp-blue transition">
-                        <div class="text-3xl mb-2">📦</div>
-                        <h4 class="font-bold text-slate-800 text-sm">2. Matériel</h4>
-                        <p class="text-xs text-slate-500 mt-1">Serveur local & Badges.</p>
+                    <div class="p-6 bg-slate-50 rounded-xl border border-slate-100 hover:border-corp-blue transition text-center group">
+                        <div class="text-4xl mb-3 group-hover:scale-110 transition-transform">📦</div>
+                        <h4 class="font-bold text-slate-800 mb-2">2. Le Boîtier Central</h4>
+                        <p class="text-sm text-slate-600">Un mini-ordinateur (Serveur) qui reste chez le client. Il traite toutes les données sur place (Sécurité).</p>
                     </div>
-                    <div class="p-4 bg-slate-50 rounded border border-slate-100 hover:border-corp-blue transition">
-                        <div class="text-3xl mb-2">💻</div>
-                        <h4 class="font-bold text-slate-800 text-sm">3. Logiciel</h4>
-                        <p class="text-xs text-slate-500 mt-1">Plateforme Web & Modules.</p>
+                    <div class="p-6 bg-slate-50 rounded-xl border border-slate-100 hover:border-corp-blue transition text-center group">
+                        <div class="text-4xl mb-3 group-hover:scale-110 transition-transform">📱</div>
+                        <h4 class="font-bold text-slate-800 mb-2">3. L'Application</h4>
+                        <p class="text-sm text-slate-600">Le logiciel pour voir la carte, recevoir les alertes et contrôler la maison ou l'entrepôt.</p>
                     </div>
-                    <div class="p-4 bg-slate-50 rounded border border-slate-100 hover:border-corp-blue transition">
-                        <div class="text-3xl mb-2">🔧</div>
-                        <h4 class="font-bold text-slate-800 text-sm">4. Service</h4>
-                        <p class="text-xs text-slate-500 mt-1">Maintenance & Support.</p>
+                    <div class="p-6 bg-slate-50 rounded-xl border border-slate-100 hover:border-corp-blue transition text-center group">
+                        <div class="text-4xl mb-3 group-hover:scale-110 transition-transform">🔄</div>
+                        <h4 class="font-bold text-slate-800 mb-2">4. La Maintenance</h4>
+                        <p class="text-sm text-slate-600">Nous surveillons le système à distance. Si un capteur tombe en panne, nous intervenons.</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- PARTIE 3: ARCHITECTURE TECHNIQUE (Animation) -->
+        <!-- PARTIE 3: ARCHITECTURE (TEXTE AGRANDI) -->
         <section class="bg-white rounded-xl shadow-md border border-slate-200 p-8 relative">
             <div class="section-number">03</div>
             <div class="relative z-10">
-                <div class="flex justify-between items-start mb-6">
+                <div class="flex flex-col md:flex-row justify-between items-start mb-6">
                     <div>
-                        <h2 class="text-2xl font-bold text-corp-dark mb-2 pl-2">Fonctionnement Technique</h2>
-                        <p class="text-slate-500 max-w-lg pl-2">Infrastructure filaire robuste pour une fiabilité industrielle.</p>
+                        <h2 class="text-2xl font-bold text-corp-dark mb-2 pl-2">Comment ça marche ?</h2>
+                        <p class="text-slate-500 max-w-lg pl-2">
+                            Une technologie filaire (câbles) pour une fiabilité totale, contrairement au sans-fil qui peut couper.
+                        </p>
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 h-80">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 h-96">
                     <!-- Canvas Animation -->
-                    <div class="border border-slate-300 rounded-lg overflow-hidden relative shadow-inner bg-slate-50">
+                    <div class="border border-slate-300 rounded-lg overflow-hidden relative shadow-inner bg-slate-50 h-full">
                         <canvas id="simulationCanvas"></canvas>
-                        <div class="absolute bottom-2 right-2 text-[10px] text-slate-400 bg-white/80 px-2 rounded">Simulation Flux</div>
+                        <div class="absolute bottom-2 right-2 text-[10px] text-slate-400 bg-white/80 px-2 rounded">Simulation Flux Données</div>
                     </div>
 
-                    <!-- Légende -->
-                    <div class="flex flex-col justify-center space-y-6 pl-4">
-                        <div class="flex items-start gap-4">
-                            <div class="w-8 h-8 rounded bg-slate-800 text-white flex items-center justify-center font-bold text-sm flex-shrink-0">1</div>
+                    <!-- Légende Explicative (TEXTE PLUS GROS) -->
+                    <div class="flex flex-col justify-center space-y-8 pl-4">
+                        <div class="flex items-start gap-5">
+                            <div class="w-10 h-10 rounded bg-slate-800 text-white flex items-center justify-center font-bold text-xl flex-shrink-0 shadow">1</div>
                             <div>
-                                <h4 class="font-bold text-slate-800 text-sm">Infrastructure (Câblée)</h4>
-                                <p class="text-xs text-slate-500">Ancres reliées en série par câbles. Captent le signal.</p>
+                                <h4 class="font-bold text-slate-900 text-lg">Les Capteurs (Plafond)</h4>
+                                <p class="text-base text-slate-600">Ils sont fixés en hauteur et reliés par des câbles (les traits gris). Ils "écoutent" les badges.</p>
                             </div>
                         </div>
-                        <div class="flex items-start gap-4">
-                            <div class="w-8 h-8 rounded bg-corp-blue text-white flex items-center justify-center font-bold text-sm flex-shrink-0">2</div>
+                        <div class="flex items-start gap-5">
+                            <div class="w-10 h-10 rounded bg-corp-blue text-white flex items-center justify-center font-bold text-xl flex-shrink-0 shadow">2</div>
                             <div>
-                                <h4 class="font-bold text-slate-800 text-sm">La Centrale (Serveur)</h4>
-                                <p class="text-xs text-slate-500">Traite les données et calcule la position mathématique.</p>
+                                <h4 class="font-bold text-slate-900 text-lg">La Centrale (Cerveau)</h4>
+                                <p class="text-base text-slate-600">Toutes les informations arrivent ici par les câbles. C'est ce boîtier qui calcule la position exacte.</p>
                             </div>
                         </div>
-                        <div class="flex items-start gap-4">
-                            <div class="w-8 h-8 rounded bg-corp-accent text-white flex items-center justify-center font-bold text-sm flex-shrink-0">3</div>
+                        <div class="flex items-start gap-5">
+                            <div class="w-10 h-10 rounded bg-corp-accent text-white flex items-center justify-center font-bold text-xl flex-shrink-0 shadow">3</div>
                             <div>
-                                <h4 class="font-bold text-slate-800 text-sm">Les Modules (Software)</h4>
-                                <p class="text-xs text-slate-500">Interface client (Alertes, Cartes, Analytics).</p>
+                                <h4 class="font-bold text-slate-900 text-lg">Les Modules (Écran)</h4>
+                                <p class="text-base text-slate-600">C'est le résultat affiché à l'utilisateur : une carte, une alerte sécurité ou une lumière qui s'allume.</p>
                             </div>
                         </div>
                     </div>
@@ -236,13 +237,13 @@
             <div class="section-number">05</div>
             <div class="relative z-10">
                 <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-2xl font-bold text-corp-dark pl-2">Cas d'Usage : Commerce (Retail)</h2>
+                    <h2 class="text-2xl font-bold text-corp-dark pl-2">Cas d'Usage : Les Commerces</h2>
                     <span class="bg-corp-accent/10 text-corp-accent px-3 py-1 rounded-full text-xs font-bold">Analyse de Données</span>
                 </div>
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                     <!-- Dashboard -->
                     <div class="bg-slate-50 p-4 rounded border border-slate-200">
-                        <h4 class="text-xs font-bold text-slate-500 uppercase mb-2 text-center">Heatmap Magasin</h4>
+                        <h4 class="text-xs font-bold text-slate-500 uppercase mb-2 text-center">Carte de Chaleur (Magasin)</h4>
                         <div class="store-grid mb-4">
                             <div class="heat-zone heat-red" style="width: 120px; height: 120px; top: 80%; left: 10%;"></div>
                             <div class="heat-zone heat-red" style="width: 80px; height: 80px; top: 30%; left: 30%;"></div>
@@ -256,58 +257,58 @@
                         </div>
                         <div class="flex justify-around text-center">
                             <div><span class="block text-xl font-bold text-slate-800">14 min</span><span class="text-[10px] text-slate-500">Temps Moyen</span></div>
-                            <div><span class="block text-xl font-bold text-corp-success">18%</span><span class="text-[10px] text-slate-500">Conversion</span></div>
+                            <div><span class="block text-xl font-bold text-corp-success">18%</span><span class="text-[10px] text-slate-500">Achats</span></div>
                         </div>
                     </div>
                     <!-- Argumentaire -->
                     <div class="flex flex-col justify-center">
-                        <p class="text-slate-600 mb-6 font-medium">Nous transformons le magasin physique en site web analysable.</p>
+                        <p class="text-slate-600 mb-6 font-medium">Nous donnons aux magasins physiques les mêmes outils que les sites internet.</p>
                         <ul class="space-y-4">
-                            <li class="flex items-start gap-3"><span class="text-xl">🗺️</span><div><strong class="text-sm text-slate-800">Zones Froides</strong><p class="text-xs text-slate-500">Identifier les rayons ignorés.</p></div></li>
-                            <li class="flex items-start gap-3"><span class="text-xl">⏱️</span><div><strong class="text-sm text-slate-800">Attractivité</strong><p class="text-xs text-slate-500">Mesurer le temps d'arrêt devant une vitrine.</p></div></li>
-                            <li class="flex items-start gap-3"><span class="text-xl">📈</span><div><strong class="text-sm text-slate-800">Staffing</strong><p class="text-xs text-slate-500">Alerte file d'attente en caisse.</p></div></li>
+                            <li class="flex items-start gap-3"><span class="text-xl">🗺️</span><div><strong class="text-sm text-slate-800">Voir les zones mortes</strong><p class="text-xs text-slate-500">Quels rayons sont ignorés par les clients ?</p></div></li>
+                            <li class="flex items-start gap-3"><span class="text-xl">⏱️</span><div><strong class="text-sm text-slate-800">Mesurer l'intérêt</strong><p class="text-xs text-slate-500">Combien de temps un client regarde la vitrine ?</p></div></li>
+                            <li class="flex items-start gap-3"><span class="text-xl">📈</span><div><strong class="text-sm text-slate-800">Gérer les caisses</strong><p class="text-xs text-slate-500">Alerte automatique s'il y a trop d'attente.</p></div></li>
                         </ul>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- PARTIE 6: L'HABITAT CONTEXTUEL -->
+        <!-- PARTIE 6: L'HABITAT (GRAND PUBLIC) -->
         <section class="bg-white rounded-xl shadow-sm border border-slate-200 p-8 relative">
             <div class="section-number">06</div>
             <div class="relative z-10">
-                <h2 class="text-2xl font-bold text-corp-dark mb-6 pl-2">L'Habitat Contextuel</h2>
+                <h2 class="text-2xl font-bold text-corp-dark mb-6 pl-2">Pour la Maison (La vie facile)</h2>
+                <p class="text-slate-500 mb-8 pl-2">Une technologie invisible pour améliorer le quotidien de Monsieur Tout-le-monde.</p>
                 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
                     <!-- Case 1 -->
-                    <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 hover:border-corp-blue transition group text-center">
-                        <div class="text-3xl mb-3 group-hover:scale-110 transition-transform">👆</div>
-                        <h4 class="font-bold text-slate-800 mb-2">Point & Control</h4>
-                        <p class="text-sm text-slate-600">Pointez votre téléphone vers une lampe ou une enceinte pour la contrôler instantanément.</p>
+                    <div class="bg-slate-50 p-6 rounded-xl border border-slate-200 hover:border-corp-blue transition text-center">
+                        <div class="text-4xl mb-4">🪄</div>
+                        <h4 class="font-bold text-slate-800 mb-2 text-lg">La Télécommande Magique</h4>
+                        <p class="text-sm text-slate-600">Pointez votre téléphone vers une lampe pour l'allumer. Pointez vers l'enceinte pour monter le son. C'est intuitif.</p>
                     </div>
                     <!-- Case 2 -->
-                    <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 hover:border-corp-blue transition group text-center">
-                        <div class="text-3xl mb-3 group-hover:scale-110 transition-transform">🌡️</div>
-                        <h4 class="font-bold text-slate-800 mb-2">Chauffage Suiveur</h4>
-                        <p class="text-sm text-slate-600">Le chauffage s'active uniquement là où vous êtes. Économie d'énergie massive.</p>
+                    <div class="bg-slate-50 p-6 rounded-xl border border-slate-200 hover:border-corp-blue transition text-center">
+                        <div class="text-4xl mb-4">💸</div>
+                        <h4 class="font-bold text-slate-800 mb-2 text-lg">Chauffage Malin</h4>
+                        <p class="text-sm text-slate-600">Pourquoi chauffer une chambre vide ? Le chauffage vous "suit" dans la maison. Économies d'énergie automatiques.</p>
                     </div>
                     <!-- Case 3 -->
-                    <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 hover:border-corp-blue transition group text-center">
-                        <div class="text-3xl mb-3 group-hover:scale-110 transition-transform">🛡️</div>
-                        <h4 class="font-bold text-slate-800 mb-2">Sécurité Invisible</h4>
-                        <p class="text-sm text-slate-600">La maison sait quand elle est vide (Alarme ON). Détection de chute senior sans caméra.</p>
+                    <div class="bg-slate-50 p-6 rounded-xl border border-slate-200 hover:border-corp-blue transition text-center">
+                        <div class="text-4xl mb-4">👵</div>
+                        <h4 class="font-bold text-slate-800 mb-2 text-lg">Ange Gardien</h4>
+                        <p class="text-sm text-slate-600">Pour les personnes âgées : le système détecte une chute ou une immobilité anormale sans avoir besoin de porter un bracelet.</p>
                     </div>
                 </div>
 
-                <!-- Écosystème -->
-                <div class="text-center border-t border-slate-100 pt-6">
-                    <p class="text-xs font-bold text-slate-400 uppercase mb-4">Compatible avec l'écosystème 2026</p>
-                    <div class="flex flex-wrap justify-center gap-4 opacity-80">
-                        <span class="px-3 py-1 bg-white border border-slate-200 text-black rounded font-bold text-xs">Matter</span>
-                        <span class="px-3 py-1 bg-blue-500 text-white rounded font-bold text-xs">Home Assistant</span>
-                        <span class="px-3 py-1 bg-orange-500 text-white rounded font-bold text-xs">Zigbee</span>
-                        <span class="px-3 py-1 bg-black text-white rounded font-bold text-xs">Apple Home</span>
-                        <span class="px-3 py-1 bg-indigo-900 text-white rounded font-bold text-xs">Philips Hue</span>
+                <!-- Écosystème (MANDATORY) -->
+                <div class="text-center border-t border-slate-100 pt-8">
+                    <p class="text-sm font-bold text-slate-500 uppercase mb-4 tracking-wider">Compatible avec les appareils que vous avez déjà</p>
+                    <div class="flex flex-wrap justify-center gap-4">
+                        <span class="px-4 py-2 bg-white border border-slate-300 text-black rounded-full font-bold text-sm shadow-sm">Matter</span>
+                        <span class="px-4 py-2 bg-blue-600 text-white rounded-full font-bold text-sm shadow-sm">Home Assistant</span>
+                        <span class="px-4 py-2 bg-black text-white rounded-full font-bold text-sm shadow-sm">Apple Home</span>
+                        <span class="px-4 py-2 bg-indigo-900 text-white rounded-full font-bold text-sm shadow-sm">Philips Hue</span>
                     </div>
                 </div>
             </div>
@@ -320,7 +321,7 @@
                 <div class="flex justify-between items-end mb-6">
                     <div>
                         <h2 class="text-2xl font-bold text-corp-dark pl-2">Une Technologie Validée</h2>
-                        <p class="text-slate-500 mt-2 pl-2">En 2026, l'UWB est le standard mondial.</p>
+                        <p class="text-slate-500 mt-2 pl-2">L'UWB est la technologie standard en 2026.</p>
                     </div>
                     <span class="bg-slate-800 text-white px-3 py-1 rounded text-xs font-bold">Standard FiRa™</span>
                 </div>
@@ -329,45 +330,37 @@
                     <div class="bg-slate-50 p-6 rounded-xl border border-slate-200 flex items-start gap-4">
                         <div class="text-3xl bg-white p-3 rounded-lg shadow-sm">📱</div>
                         <div>
-                            <h4 class="font-bold text-corp-dark mb-2">Mobile & Wearables</h4>
-                            <ul class="space-y-1 text-sm text-slate-600">
-                                <li>• <strong>Apple :</strong> 100% des iPhone & Apple Watch.</li>
-                                <li>• <strong>Samsung :</strong> Écosystème Galaxy & SmartThings.</li>
-                                <li>• <strong>Google :</strong> Pixel Phones, Watch & Tablette.</li>
-                            </ul>
+                            <h4 class="font-bold text-corp-dark mb-2">Les Smartphones</h4>
+                            <p class="text-sm text-slate-600 mb-2">
+                                Tous les <strong>iPhone</strong> (depuis le 11) et les <strong>Samsung Galaxy</strong> (S21+) intègrent une puce UWB pour la localisation précise. Le parc est déjà installé.
+                            </p>
                         </div>
                     </div>
                     <div class="bg-slate-50 p-6 rounded-xl border border-slate-200 flex items-start gap-4">
                         <div class="text-3xl bg-white p-3 rounded-lg shadow-sm">🏠</div>
                         <div>
-                            <h4 class="font-bold text-corp-dark mb-2">Smart Home & Accès</h4>
-                            <ul class="space-y-1 text-sm text-slate-600">
-                                <li>• <strong>Amazon/Google :</strong> Détection de présence (Echo/Nest).</li>
-                                <li>• <strong>Serrures :</strong> Yale, August (Ouverture sans contact).</li>
-                                <li>• <strong>HID Global :</strong> Badges d'entreprise dématérialisés.</li>
-                            </ul>
+                            <h4 class="font-bold text-corp-dark mb-2">Maison & Clés</h4>
+                            <p class="text-sm text-slate-600">
+                                <strong>Apple AirTag</strong> et <strong>Samsung SmartTag</strong> utilisent cette technologie pour retrouver des clés au centimètre près.
+                            </p>
                         </div>
                     </div>
                     <div class="bg-slate-50 p-6 rounded-xl border border-slate-200 flex items-start gap-4">
                         <div class="text-3xl bg-white p-3 rounded-lg shadow-sm">🚗</div>
                         <div>
-                            <h4 class="font-bold text-corp-dark mb-2">Automobile (Digital Key)</h4>
-                            <p class="text-xs text-slate-500 mb-2">Standard mondial d'ouverture sans clé.</p>
-                            <div class="flex flex-wrap gap-2 text-xs font-bold text-slate-600">
-                                <span class="bg-white px-2 py-1 rounded border">BMW</span>
-                                <span class="bg-white px-2 py-1 rounded border">Tesla</span>
-                                <span class="bg-white px-2 py-1 rounded border">VW</span>
-                            </div>
+                            <h4 class="font-bold text-corp-dark mb-2">Automobile (Clé Digitale)</h4>
+                            <p class="text-sm text-slate-600">
+                                BMW, Audi et Tesla utilisent l'UWB pour ouvrir la voiture automatiquement quand vous approchez, sans sortir le téléphone.
+                            </p>
                         </div>
                     </div>
                     <div class="bg-slate-50 p-6 rounded-xl border border-slate-200 flex items-start gap-4">
                         <div class="text-3xl bg-white p-3 rounded-lg shadow-sm">🏭</div>
                         <div>
-                            <h4 class="font-bold text-corp-dark mb-2">Industrie & Retail</h4>
-                            <ul class="space-y-1 text-sm text-slate-600">
-                                <li>• <strong>Siemens/Bosch :</strong> Robots autonomes.</li>
-                                <li>• <strong>Paiement :</strong> Validation sans contact (NFC Next-Gen).</li>
-                            </ul>
+                            <h4 class="font-bold text-corp-dark mb-2">Industrie</h4>
+                            <p class="text-sm text-slate-600">
+                                Les usines modernes (Bosch, Siemens) l'utilisent pour guider leurs robots autonomes.
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -383,26 +376,26 @@
                     <div class="chart-container">
                         <canvas id="revenueChart"></canvas>
                     </div>
-                    <div class="space-y-4">
-                        <div class="flex gap-3">
-                            <div class="w-1 bg-corp-dark rounded"></div>
+                    <div class="space-y-6">
+                        <div class="flex gap-4">
+                            <div class="w-2 bg-corp-dark rounded"></div>
                             <div>
-                                <h4 class="font-bold text-sm text-slate-800">1. Matériel (35%)</h4>
-                                <p class="text-xs text-slate-500">Vente "One-shot" à l'installation. Trésorerie immédiate.</p>
+                                <h4 class="font-bold text-base text-slate-800">1. Matériel (35%)</h4>
+                                <p class="text-sm text-slate-500">Vente "One-shot" à l'installation. Permet de payer le matériel et les installateurs immédiatement.</p>
                             </div>
                         </div>
-                        <div class="flex gap-3">
-                            <div class="w-1 bg-corp-accent rounded"></div>
+                        <div class="flex gap-4">
+                            <div class="w-2 bg-corp-accent rounded"></div>
                             <div>
-                                <h4 class="font-bold text-sm text-corp-accent">2. Abonnements (50%) - Le Cœur</h4>
-                                <p class="text-xs text-slate-500">Licences logicielles récurrentes. Marge brute > 80%.</p>
+                                <h4 class="font-bold text-base text-corp-accent">2. Abonnements (50%) - La Marge</h4>
+                                <p class="text-sm text-slate-500">Le client paie un abonnement mensuel pour utiliser le logiciel. C'est du revenu récurrent très rentable.</p>
                             </div>
                         </div>
-                        <div class="flex gap-3">
-                            <div class="w-1 bg-corp-blue rounded"></div>
+                        <div class="flex gap-4">
+                            <div class="w-2 bg-corp-blue rounded"></div>
                             <div>
-                                <h4 class="font-bold text-sm text-corp-blue">3. Services (15%)</h4>
-                                <p class="text-xs text-slate-500">Maintenance et exploitation de la donnée (Data).</p>
+                                <h4 class="font-bold text-base text-corp-blue">3. Services (15%)</h4>
+                                <p class="text-sm text-slate-500">Contrats de maintenance et vente de données statistiques.</p>
                             </div>
                         </div>
                     </div>
